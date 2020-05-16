@@ -1,6 +1,7 @@
 import { Product } from '../product';
 import * as fromRoot from '../../state/app.state';
 import { createFeatureSelector, createSelector } from '@ngrx/store';
+import { ProductActionTypes } from 'src/app/state/product.actions';
 
 // extends interface preserving the lazy loading model
 export interface State extends fromRoot.State {
@@ -20,7 +21,7 @@ const initalState: ProductState = {
 };
 
 const getProductFeatureState =
-createFeatureSelector<ProductState>('products');
+    createFeatureSelector<ProductState>('products');
 
 export const getShowProductCode = createSelector(
     getProductFeatureState,
@@ -43,10 +44,31 @@ export function reducer(state = initalState, action): ProductState {
 
     switch (action.type) {
 
-        case 'TOGGLE_PRODUCT_CODE' :
-               return {
+        case ProductActionTypes.ToggleProductCode:
+            return {
                 ...state,
                 showProductCode: action.payload
+            };
+        case ProductActionTypes.SetCurrentProduct:
+            return {
+                ...state,
+                currentProduct: { ...action.payload }
+            };
+        case ProductActionTypes.ClearCurrentProduct:
+            return {
+                ...state,
+                currentProduct: null
+            };
+        case ProductActionTypes.InitializeCurrentProduct:
+            return {
+                ...state,
+                currentProduct: {
+                    id: 0,
+                    productName: '',
+                    productCode: 'New',
+                    description: '',
+                    starRating: 0
+                }
             };
 
         default:
