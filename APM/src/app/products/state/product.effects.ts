@@ -29,4 +29,26 @@ export class ProductEffects {
             catchError(err => of(new productActions.UpdateProductFail(err)))
         ))
     );
+
+    @Effect()
+    createProduct = this.actions$.pipe(
+        ofType(productActions.ProductActionTypes.CreateProduct),
+        map((action: productActions.CreateProduct) => action.payload),
+        mergeMap((product: Product) =>
+        this.productService.createProduct(product).pipe(
+            map(newProduct => (new productActions.CreateProductSuccess(newProduct))),
+            catchError(err => of(new productActions.CreateProductFail(err)))
+        ))
+    );
+
+    @Effect()
+    deleteProduct = this.actions$.pipe(
+        ofType(productActions.ProductActionTypes.DeleteProduct),
+        map((action: productActions.DeleteProduct) => action.payload),
+        mergeMap((id: number) =>
+        this.productService.deleteProduct(id).pipe(
+            map(() => (new productActions.DeleteProductSuccess(id))),
+            catchError(err => of(new productActions.UpdateProductFail(err)))
+        ))
+    );
 }

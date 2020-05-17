@@ -25,10 +25,9 @@ export class ProductService {
 
   createProduct(product: Product): Observable<Product> {
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-    product.id = null;
+    // product.id = null;
     return this.http.post<Product>(this.productsUrl, product, { headers })
       .pipe(
-        tap(data => console.log('createProduct: ' + JSON.stringify(data))),
         catchError(this.handleError)
       );
   }
@@ -38,7 +37,6 @@ export class ProductService {
     const url = `${this.productsUrl}/${id}`;
     return this.http.delete<Product>(url, { headers })
       .pipe(
-        tap(data => console.log('deleteProduct: ' + id)),
         catchError(this.handleError)
       );
   }
@@ -48,7 +46,6 @@ export class ProductService {
     const url = `${this.productsUrl}/${product.id}`;
     return this.http.put<Product>(url, product, { headers })
       .pipe(
-        tap(() => console.log('updateProduct: ' + product.id)),
         // Update the item in the list
         // This is required because the selected product that was edited
         // was a copy of the item from the array.
