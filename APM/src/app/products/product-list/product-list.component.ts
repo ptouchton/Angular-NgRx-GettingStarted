@@ -38,6 +38,10 @@ export class ProductListComponent implements OnInit, OnDestroy {
       showProductCode => this.displayCode = showProductCode);
 
     this.errorMessage$ = this.store.pipe(select(fromProduct.getError));
+
+    this.store.pipe(select(fromProduct.getCurrentProuct),
+      takeWhile(() => this.componentActive))
+      .subscribe((currentProduct) => this.selectedProduct = currentProduct);
   }
 
   ngOnDestroy(): void {
